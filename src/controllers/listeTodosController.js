@@ -1,18 +1,19 @@
-const { Pool } = require('pg');
-
+const pool = require('../configs/db');
 module.exports = function (app) {
-    //     createTodo(title)
-    // markTodoCompleted(id)
-    // markTodoUncompleted(id)
-    // deleteTodo(id)
-    // listTodos
-
-    app.get('listTodos', async (req, res) => {
+    app.get('/listTodos', async (req, res) => {
         try {
-            const listTodos = await Pool.query('SELECT * FROM todo');
-            res.json(listTodos.rows());
+            const listTodos = await pool.query('SELECT * FROM todo');
+            if (listTodos.length === 0) {
+                res.status(200).send({
+                    message: 'No data'
+                });
+            } else {
+                res.json(listTodos.rows);
+            }
         } catch (error) {
-            console.log(error.message);
+            res.status(400).send({
+                message: error.message
+            });
         }
     });
 };

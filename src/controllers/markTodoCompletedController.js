@@ -1,21 +1,17 @@
-const { Pool } = require('pg');
+const pool = require('../configs/db');
 
 module.exports = function (app) {
-    //     createTodo(title)
-    // markTodoCompleted(id)
-    // markTodoUncompleted(id)
-    // deleteTodo(id)
-    // listTodos
-
-    app.put('markTodoCompleted/:id', async (req, res) => {
+    app.put('/markTodoCompleted/:id', async (req, res) => {
         try {
             const { id } = req.params;
-            await Pool.query('UPDATE todo SET completed = true WHERE id = $1', [
+            await pool.query('UPDATE todo SET completed = true WHERE id = $1', [
                 id
             ]);
             res.json('Todo was marked as completed!');
         } catch (error) {
-            console.log(error.message);
+            res.status(400).send({
+                message: error.message
+            });
         }
     });
 };

@@ -1,13 +1,15 @@
-const { Pool } = require('pg');
+const pool = require('../configs/db');
 
 module.exports = function (app) {
-    app.get('deleteTodo/:id', async (req, res) => {
+    app.delete('/deleteTodo/:id', async (req, res) => {
         try {
             const { id } = req.params;
-            await Pool.query('DELETE FROM todo WHERE id = $1', [id]);
+            await pool.query('DELETE FROM todo WHERE id = $1', [id]);
             res.json('Todo was deleted!');
         } catch (error) {
-            console.log(error.message);
+            res.status(400).send({
+                message: error.message
+            });
         }
     });
 };
