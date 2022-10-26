@@ -10,9 +10,10 @@ module.exports = function (app) {
     app.post('createTodo', async (req, res) => {
         try {
             const { title } = req.body;
+            const { completed } = req.body;
             const newTodo = await Pool.query(
-                'INSERT INTO todo (title) values ($1) RETURNING *',
-                [title]
+                'INSERT INTO todo (title,completed) values ($1,$2) RETURNING *',
+                [title, completed]
             );
             res.json(newTodo.rows[0]);
         } catch (error) {
