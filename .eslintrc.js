@@ -9,5 +9,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  rules: {}
-}
+  rules: {
+    semi: [2, 'always'],
+    indent: 'off'
+  }
+};
